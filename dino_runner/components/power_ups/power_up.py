@@ -15,6 +15,7 @@ class PowerUp:
         self.start_time = 0
         self.time_up = 0
         self.used = False
+        self.sonido = pygame.mixer.Sound("dino_runner/assets/sfx\WhatsApp-Audio-2023-04-05-at-4.38.55-AM.wav")
 
     def update(self, game_speed, player):
         self.rect.x -= game_speed
@@ -22,6 +23,7 @@ class PowerUp:
             self.start_time = pygame.time.get_ticks()
             self.time_up = self.start_time + self.POWER_UP_DURATION
             self.used = True
+            self.sonido.play()
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)

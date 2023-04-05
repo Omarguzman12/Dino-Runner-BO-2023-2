@@ -4,6 +4,11 @@ from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, T
 from dino_runner.components.dinosaur import Dinosaur
 from dino_runner.components.obstacles.obstacle_manager import ObstacleManager
 from dino_runner.components.power_ups.power_up_manager import PowerUpManager
+from dino_runner.components.cloud import Cloud
+pygame.init()
+pygame.mixer.init()
+pygame.mixer.music.load(r"C:\python2\Dino-Runner-BO-2023-2\dino_runner\assets\sfx\X2Download.app-Massive-Rat-_128-kbps_.wav")
+pygame.mixer.music.play(-1)
 
 
 class Game:
@@ -21,6 +26,7 @@ class Game:
         self.obstacle_manager = ObstacleManager()
         self.power_up_manager = PowerUpManager()
         self.points = 0
+        self.cloud = Cloud()
 
     def run(self):
         # Game loop: events - update - draw
@@ -38,6 +44,7 @@ class Game:
 
     def update(self):
         user_input = pygame.key.get_pressed()
+        self.cloud.update(self.game_speed)
         self.player.update(user_input)
         self.obstacle_manager.update(self.game_speed, self.player)
         self.power_up_manager.update(self.game_speed, self.points, self.player)
@@ -49,6 +56,7 @@ class Game:
         self.clock.tick(FPS)
         self.screen.fill((255, 255, 255))
         self.draw_background()
+        self.cloud.draw(self.screen)
         self.player.draw(self.screen)
         self.obstacle_manager.draw(self.screen)
         self.power_up_manager.draw(self.screen)
@@ -57,9 +65,13 @@ class Game:
 
     def draw_background(self):
         image_width = BG.get_width()
-        self.screen.blit(BG, (self.x_pos_bg, self.y_pos_bg))
+        self.screen.blit(BG, ( self.x_pos_bg, self.y_pos_bg))
         self.screen.blit(BG, (image_width + self.x_pos_bg, self.y_pos_bg))
         if self.x_pos_bg <= -image_width:
             self.screen.blit(BG, (image_width + self.x_pos_bg, self.y_pos_bg))
             self.x_pos_bg = 0
         self.x_pos_bg -= self.game_speed
+
+    
+
+  

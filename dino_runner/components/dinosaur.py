@@ -2,13 +2,14 @@ import pygame
 from dino_runner.utils.constants import (RUNNING, RUNNING_SHIELD, DUCKING, DUCKING_SHIELD, JUMPING, JUMPING_SHIELD,
                                          DEFAULT_TYPE, SHIELD_TYPE)
 
+#sonido
 
 class Dinosaur:
     X_POS = 80
     Y_POS = 310
     Y_POS_DUCK = 340
     JUMP_VEL = 8.5
-
+    
     def __init__(self):
         self.run_img = {DEFAULT_TYPE: RUNNING, SHIELD_TYPE: RUNNING_SHIELD}
         self.duck_img = {DEFAULT_TYPE: DUCKING, SHIELD_TYPE: DUCKING_SHIELD}
@@ -24,7 +25,8 @@ class Dinosaur:
         self.dino_jump = False
         self.jump_vel = self.JUMP_VEL
         self.dino_dead = False
-
+        self.jump_sfx = pygame.mixer.Sound("dino_runner/assets/sfx/jump.mp3")
+        
     def update(self, user_input):
         if self.dino_jump:
             self.jump()
@@ -71,10 +73,15 @@ class Dinosaur:
         if self.dino_jump:
             self.dino_rect.y -= self.jump_vel * 4
             self.jump_vel -= 0.8
+            
         if self.jump_vel < -self.JUMP_VEL:
             self.dino_rect.y = self.Y_POS
             self.dino_jump = False
             self.jump_vel = self.JUMP_VEL
+            self.jump_sfx.play()
+            
+            
+
 
     def set_power_up(self, power_up):
         if power_up.type == SHIELD_TYPE:
